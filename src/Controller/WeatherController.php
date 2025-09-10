@@ -12,6 +12,8 @@ class WeatherController extends AbstractController
     #[Route('/api/weather/current/{city}', methods: ['GET'])]
     public function current(WeatherService $weatherService, string $city): JsonResponse
     {
+        $data =$weatherService->getCurrentWeather($city);
+        dd($weatherService->getCurrentWeather($city));
         return $this->json($weatherService->getCurrentWeather($city));
     }
 

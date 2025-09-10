@@ -75,4 +75,19 @@ class WeatherService
             return $response->toArray();
         });
     }
+
+    public function windDirection(int $deg): string
+    {
+        $directions = [
+            "N", "NNE", "NE", "ENE",
+            "E", "ESE", "SE", "SSE",
+            "S", "SSW", "SW", "WSW",
+            "W", "WNW", "NW", "NNW"
+        ];
+
+        // Cada sector cubre 22.5° (360 / 16)
+        $index = (int) round($deg / 22.5) % 16;
+
+        return $directions[$index];
+    }
 }
