@@ -1,0 +1,11 @@
+<form id="search-form" class="d-flex" method="GET">
+    <input
+        class="form-control me-2"
+        type="search"
+        name="q"
+        placeholder="Buscar ciudad..."
+        aria-label="Buscar ciudad"
+        value="{{ app.request.get('q') }}"/>
+    <button class="btn btn-outline-light" type="submit">Buscar</button>
+</form>
+

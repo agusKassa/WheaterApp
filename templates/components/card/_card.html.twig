@@ -1,0 +1,64 @@
+<div class="card shadow-sm mb-3 city-card" data-id="{{ city.id }}">
+    <div class="card-body">
+        <div class="row mb-2">
+            <div class="col-8">
+                <h5 class="card-title fs-4">{{ city.city }}, {{ city.country }}</h5>
+            </div>
+            <div class="col-4">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-close remove-city-btn" aria-label="X"></button>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-1">
+            <div class="col-8">
+                <p class="fs-5 text-wa">
+                    <strong>Temperatura: </strong> {{ city.temp }}°C<br>
+                    <strong class="fs-6">Sensacion Térmica: </strong> {{ city.feels_like }}°C<br>
+                </p>
+            </div>
+            <div class="col-4 d-flex justify-content-center">
+                {{ weather_icon(city.icon)|raw }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <strong>Mínima: </strong> {{ city.temp_min }}°C<br>
+            </div>
+            <div class="col-6 d-flex justify-content-end">
+                <span>
+                    <strong>Máxima: </strong>
+                    {{ city.temp_max }}°C
+                </span>
+                <br>
+            </div>
+        </div>
+        <hr/>
+        <div class="row">
+            <div class="col-6">
+                <strong>Humedad: </strong> {{ city.humidity }}%<br>
+            </div>
+            <div class="col-6 d-flex justify-content-end align-items-center">
+                <span>
+                    <strong>Visibilidad: </strong> {{ city.visibility }} %
+                </span>
+                <br>
+            </div>
+        </div>
+        <hr/>
+        <div class="row">
+            <div class="col-6">
+                <strong>Viento: </strong> {{ city.wind_speed }}Km/h<br>
+            </div>
+            <div class="col-6 d-flex justify-content-end align-items-center">
+                <span>
+                    <strong>Dirección: </strong>
+                    {{ city.wind_direction }}
+                    {{ wind_arrow(city.wind_direction)|raw }}
+                </span>
+                <br>
+            </div>
+        </div>
+        <hr/>
+    </div>
+</div>

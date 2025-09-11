@@ -1,0 +1,27 @@
+
+
+body {
+    background-color: lightgray;
+}
+
+hr{
+    margin-top: 4px;
+    margin-bottom: 18px;
+}
+
+.icon-weather{
+    width: auto;
+    height: 48px;
+}
+
+.direction-arrow{
+    height: 12px;
+    width: auto;
+    font-size: 12px;
+    font-weight: bolder;
+    margin: 0;
+}
+
+span{
+    text-align: center;
+}

@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Api\WeatherReportDTO;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
@@ -21,11 +22,10 @@ class WeatherService
         $this->baseUrl = "https://api.openweathermap.org/data/2.5";
     }
 
-    public function getCurrentWeather(string $city): array
+    public function getCurrentWeather(string $city): WeatherReportDTO
     {
         return $this->cache->get("weather_current_$city", function (ItemInterface $item) use ($city) {
             $item->expiresAfter(600); // 10 minutos de cache
-
             $response = $this->client->request("GET", "{$this->baseUrl}/weather", [
                 "query" => [
                     "q" => $city,
@@ -34,8 +34,7 @@ class WeatherService
                     "lang" => "es"
                 ]
             ]);
-
-            return $response->toArray();
+            return $this->makeWeatherDTo($response->toArray());
         });
     }
 
@@ -89,5 +88,23 @@ class WeatherService
         $index = (int) round($deg / 22.5) % 16;
 
         return $directions[$index];
+    }
+
+    public function makeWeatherDTo($data) : WeatherReportDTO
+    {
+        $report = new WeatherReportDTO();
+        $report->id = $data["id"];
+        $report->city = $data['name'];
+        $report->country = $data['sys']['country'];
+        $report->temp = $data['main']['temp'];
+        $report->feels_like = $data['main']['feels_like'];
+        $report->temp_min = $data['main']['temp_min'];
+        $report->temp_max = $data['main']['temp_max'];
+        $report->visibility = ($data['visibility']/100);
+        $report->humidity = $data['main']['humidity'];
+        $report->wind_speed = $data['wind']['speed'];
+        $report->wind_direction = $this->windDirection($data['wind']['deg']);
+        $report->icon = $data['weather'][0]['main'];
+        return $report;
     }
 }

@@ -1,0 +1,7 @@
+{% for city in cities %}
+    <div class="col-md-4">
+        {{ include('components/card/_card.html.twig', { city: city }) }}
+    </div>
+{% else %}
+    <p id="empty-msg">No hay ciudades para mostrar.</p>
+{% endfor %}
