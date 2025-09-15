@@ -25,3 +25,23 @@ hr{
 span{
     text-align: center;
 }
+
+.btn:hover {
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.card {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+/* Animación para los iconos de las flechas */
+.btn:hover .fa-arrow-right {
+    transform: translateX(5px);
+    transition: transform 0.3s ease;
+}

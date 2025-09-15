@@ -2,13 +2,16 @@
 
 {% block body %}
     {{ include('components/navbar/_navbar.html.twig') }}
-
     <div class="container mt-4">
-        <h2 class="mb-4">Clima de Ciudades</h2>
-        <div class="row mb-4">
-            {{ include('components/searchbar/_searchbar.html.twig') }}
+        <div class="row justify-content-center mb-4">
+            <h1 class=" text-center mb-4">Weather App</h1>
+            {{ include('components/susbcription/susbcription.html.twig') }}
         </div>
-        {# Se llenará con JS a partir del localStorage #}
-        <div id="cities-container" class="row"/>
+    <div class="row mb-4">
+        {{ include('components/searchbar/_searchbar.html.twig') }}
     </div>
+    {# Se llenará con JS a partir del localStorage #}
+    <div id="cities-container" class="row mb-4"></div>
+    </div>
+
 {% endblock %}

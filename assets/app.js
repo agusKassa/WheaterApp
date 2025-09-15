@@ -108,3 +108,36 @@ document.addEventListener('click', function(e) {
 }
 });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Botón de Telegram
+    const telegramBtn = document.getElementById('telegram-btn');
+    if (telegramBtn) {
+        telegramBtn.addEventListener('click', function() {
+            subscribeToTelegram();
+        });
+    }
+
+    // Botón de WhatsApp
+    const whatsappBtn = document.getElementById('whatsapp-btn');
+    if (whatsappBtn) {
+        whatsappBtn.addEventListener('click', function() {
+            subscribeToWhatsApp();
+        });
+    }
+});
+
+function subscribeToTelegram() {
+    console.log('Suscribiendo a Telegram...');
+    // Reemplaza con tu enlace de Telegram
+    window.open('https://t.me/tu_canal', '_blank');
+}
+
+function subscribeToWhatsApp() {
+    console.log('Suscribiendo a WhatsApp...');
+    // Reemplaza con tu número de WhatsApp (formato internacional sin + ni espacios)
+    const phoneNumber = '5491234567890'; // Ejemplo: Argentina +54 9 123 456 7890
+    const message = 'Hola, me interesa suscribirme'; // Mensaje opcional
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+}
