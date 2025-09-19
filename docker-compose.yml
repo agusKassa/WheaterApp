@@ -9,6 +9,8 @@ services:
       - .:/var/www/html
     depends_on:
       - db
+    networks:
+      - app-network
 
   nginx:
     image: nginx:stable-alpine
@@ -19,6 +21,8 @@ services:
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - php
+    networks:
+      - app-network
 
   db:
     image: mysql:8.0
@@ -29,8 +33,10 @@ services:
       MYSQL_PASSWORD: symfony
     ports:
       - "3306:3306"
+    networks:
+      - app-network
 
-###> doctrine/doctrine-bundle ###
+  ###> doctrine/doctrine-bundle ###
   database:
     image: postgres:${POSTGRES_VERSION:-16}-alpine
     environment:
@@ -42,9 +48,58 @@ services:
       - database_data:/var/lib/postgresql/data:rw
       # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
       # - ./docker/db/data:/var/lib/postgresql/data:rw
-###< doctrine/doctrine-bundle ###
+    networks:
+      - app-network
+  ###< doctrine/doctrine-bundle ###
+
+  # Bot de Telegram
+  telegram-bot:
+    build:
+      context: ./bots/telegram
+      dockerfile: Dockerfile
+    volumes:
+      - ./bots/telegram:/app
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - API_BASE_URL=http://nginx:80
+      - API_TELEGRAM_ENDPOINT=${API_TELEGRAM_ENDPOINT:-/api/weather/telegram}
+    env_file:
+      - .env
+    depends_on:
+      - nginx
+      - php
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  # Bot de WhatsApp
+  whatsapp-bot:
+    build:
+      context: ./bots/whatsapp
+      dockerfile: Dockerfile
+    volumes:
+      - ./bots/whatsapp:/app
+      - ./bots/whatsapp/session:/app/session
+    environment:
+      - API_BASE_URL=http://nginx:80
+      - API_WHATSAPP_ENDPOINT=${API_WHATSAPP_ENDPOINT:-/api/weather/whatsapp}
+      - GREEN_API_INSTANCE_ID=${GREEN_API_INSTANCE_ID}
+      - GREEN_API_TOKEN=${GREEN_API_TOKEN}
+      - WHATSAPP_SESSION_PATH=/app/session
+    env_file:
+      - .env
+    depends_on:
+      - nginx
+      - php
+    restart: unless-stopped
+    networks:
+      - app-network
 
 volumes:
-###> doctrine/doctrine-bundle ###
+  ###> doctrine/doctrine-bundle ###
   database_data:
 ###< doctrine/doctrine-bundle ###
+
+networks:
+  app-network:
+    driver: bridge
